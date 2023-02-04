@@ -10,11 +10,13 @@ namespace AspNetCoreIdentityApp.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly UserManager<AppUser> _userManager;
+        private readonly SignInManager<AppUser> _signInManager;
 
-        public HomeController(ILogger<HomeController> logger, UserManager<AppUser> userManager)
+        public HomeController(ILogger<HomeController> logger, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
         {
             _logger = logger;
             _userManager = userManager;
+            _signInManager = signInManager;
         }
 
         public IActionResult Index()
@@ -63,7 +65,37 @@ namespace AspNetCoreIdentityApp.Controllers
                 return View(request);
         }
 
+        public IActionResult SıgnIn()
+        {
+            return View();
+        }
 
+        [HttpPost]
+        public async Task<IActionResult> SıgnIn(SignInViewModel request)
+        {
+            
+            var hasUser = await _userManager.FindByEmailAsync(request.Email);
+
+            if (hasUser == null)
+            {
+                TempData["ErrorMessage"] = "Kullanıcı adınız veya parolanız hatalı lütfen tekrar deneyiniz.";
+                return View();
+            }
+
+            var SignInresult = await _signInManager.PasswordSignInAsync(hasUser, request.Password, request.RememberMe, false);
+            
+            if(SignInresult.Succeeded)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Kullanıcı adınız veya parolanız hatalı lütfen tekrar deneyiniz.";
+                return View(request);
+            }
+
+            
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

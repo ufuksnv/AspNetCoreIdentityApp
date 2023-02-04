@@ -16,6 +16,7 @@ namespace AspNetCoreIdentityApp.ViewModels
 
         [Required(ErrorMessage = "Lütfen Mail giriniz !")]
         [Display(Name = "Email :")]
+        [EmailAddress(ErrorMessage ="Email formatı yanlıştır.")]
         public string? Email { get; set; }
 
         [Required(ErrorMessage = "Lütfen Telefon Numarası giriniz !")]
