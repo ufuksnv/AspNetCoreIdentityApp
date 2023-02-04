@@ -1,3 +1,5 @@
+using AspNetCoreIdentityApp.CustomValidation;
+using AspNetCoreIdentityApp.Localizations;
 using AspNetCoreIdentityApp.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,7 +15,21 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 
 //AddIdentity
-builder.Services.AddIdentity<AppUser,AppRole>().AddEntityFrameworkStores<AppDbContext>();
+builder.Services.AddIdentity<AppUser,AppRole>(options =>
+{
+ //validation
+
+    options.User.RequireUniqueEmail = true;
+    options.User.AllowedUserNameCharacters = "abcçdefgðhýijklmnoçpqrsþtuüvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._";
+
+    options.Password.RequiredLength = 6;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireLowercase = true;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireDigit = false;
+
+}).AddPasswordValidator<PasswordValidator>().AddUserValidator<UserValidator>()
+.AddErrorDescriber<CustomIdentityErrorDescriber>().AddEntityFrameworkStores<AppDbContext>();
 
 
 
@@ -40,5 +56,13 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+      name: "areas",
+      pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+    );
+});
 
 app.Run();
