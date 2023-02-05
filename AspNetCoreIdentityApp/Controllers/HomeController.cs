@@ -82,17 +82,20 @@ namespace AspNetCoreIdentityApp.Controllers
                 return View();
             }
 
-            var SignInresult = await _signInManager.PasswordSignInAsync(hasUser, request.Password, request.RememberMe, false);
+            var SignInresult = await _signInManager.PasswordSignInAsync(hasUser, request.Password, request.RememberMe, true);
             
             if(SignInresult.Succeeded)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Member");
             }
-            else
+            if(SignInresult.IsLockedOut)
             {
+                TempData["LockedOutMessage"] = "3 dakika sonra tekrar deneyiniz";
+                return View();
+            }
                 TempData["ErrorMessage"] = "Kullanıcı adınız veya parolanız hatalı lütfen tekrar deneyiniz.";
                 return View(request);
-            }
+            
 
             
         }

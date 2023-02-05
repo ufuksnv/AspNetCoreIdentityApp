@@ -15,6 +15,12 @@
                 @TempData["ErrorMessage"]
             </div>
         }
+        @if ((TempData["LockedOutMessage"] != null))
+        {
+            <div class="alert alert-info" role="alert">
+                @TempData["LockedOutMessage"]
+            </div>
+        }
 
         <form asp-controller="Home" asp-action="SıgnIn" method="post">
             <div class="mb-3">

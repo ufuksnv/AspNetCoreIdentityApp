@@ -26,12 +26,29 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
                     </ul>
-                </div>
+                   
+                    @if(User.Identity!.IsAuthenticated)
+                    {
+                        <ul class="navbar-nav me-0">
 
-                <a class="btn btn-outline-success mx-1" asp-controller="Home" asp-action="SıgnIn">Giriş Yap</a>
-                <a class="btn btn-outline-success" asp-controller="Home" asp-action="SignUp">Kayıt Ol</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    @User.Identity.Name
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" asp-controller="Member" asp-action="Logout">Çıkış Yap</a></li>
+                                </ul>
+                            </li>
+
+                        </ul>
+                    }
+                    else
+                    {
+                        <a class="btn btn-outline-success mx-1" asp-controller="Home" asp-action="SıgnIn">Giriş Yap</a>
+                        <a class="btn btn-outline-success" asp-controller="Home" asp-action="SignUp">Kayıt Ol</a>                       
+                    }                                         
+                </div>             
                 
-
             </div>
         </nav>
     </header>

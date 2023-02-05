@@ -28,11 +28,23 @@ builder.Services.AddIdentity<AppUser,AppRole>(options =>
     options.Password.RequireUppercase = false;
     options.Password.RequireDigit = false;
 
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(3);
+    options.Lockout.MaxFailedAccessAttempts = 3;
+
 }).AddPasswordValidator<PasswordValidator>().AddUserValidator<UserValidator>()
 .AddErrorDescriber<CustomIdentityErrorDescriber>().AddEntityFrameworkStores<AppDbContext>();
 
+//CookieSettings
+builder.Services.ConfigureApplicationCookie(opt =>
+{
+    var cookieBuilder = new CookieBuilder();
 
-
+    cookieBuilder.Name = "IdentityAppCookie";
+    opt.LoginPath = new PathString("/Home/SýgnIn");
+    opt.Cookie = cookieBuilder;
+    opt.ExpireTimeSpan = TimeSpan.FromDays(60);
+    opt.SlidingExpiration = true;
+});
 
 
 
@@ -48,6 +60,8 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+app.UseAuthentication();
 
 app.UseRouting();
 
