@@ -1,6 +1,7 @@
 using AspNetCoreIdentityApp.CustomValidation;
 using AspNetCoreIdentityApp.Localizations;
 using AspNetCoreIdentityApp.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,12 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("SqlCon"));
+});
+
+//ForgetPasswordToken
+builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
+{
+    options.TokenLifespan = TimeSpan.FromHours(2);
 });
 
 //AddIdentity
@@ -31,8 +38,11 @@ builder.Services.AddIdentity<AppUser,AppRole>(options =>
     options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(3);
     options.Lockout.MaxFailedAccessAttempts = 3;
 
-}).AddPasswordValidator<PasswordValidator>().AddUserValidator<UserValidator>()
-.AddErrorDescriber<CustomIdentityErrorDescriber>().AddEntityFrameworkStores<AppDbContext>();
+}).AddPasswordValidator<PasswordValidator>()
+  .AddUserValidator<UserValidator>()
+  .AddErrorDescriber<CustomIdentityErrorDescriber>()
+  .AddDefaultTokenProviders()
+  .AddEntityFrameworkStores<AppDbContext>();
 
 //CookieSettings
 builder.Services.ConfigureApplicationCookie(opt =>

@@ -35,12 +35,28 @@
                 <span class="text-danger" asp-validation-for="Password"></span>
             </div>
 
-            <div class="mb-3 form-check">
-                <input type="checkbox" class="form-check-input" asp-for="RememberMe">
-                <label class="form-check-label" for="RememberMe">Beni Hatırla</label>
+            <div class="row">
+                <div class="col col-md-6">
+
+                    <div class="mb-3 form-check">
+                  <input type="checkbox" class="form-check-input" asp-for="RememberMe">
+                  <label class="form-check-label" for="RememberMe">Beni Hatırla</label>
+                    </div>
+
+                </div>
+                <div class="col col-md-6">
+                    <a class="float-end" asp-controller="Home" asp-action="ForgetPassword">Şifremi Unuttum</a>
+                </div>
             </div>
 
+            
+
             <button type="submit" class="btn btn-primary">Giriş Yap</button>
+
+            <div>
+                
+            </div>
+
         </form>
 
     </div>
