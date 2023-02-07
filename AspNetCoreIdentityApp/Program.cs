@@ -1,6 +1,8 @@
 using AspNetCoreIdentityApp.CustomValidation;
 using AspNetCoreIdentityApp.Localizations;
 using AspNetCoreIdentityApp.Models;
+using AspNetCoreIdentityApp.OptionsModels;
+using AspNetCoreIdentityApp.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,6 +16,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("SqlCon"));
 });
+
+//appsettings configuration
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 
 //ForgetPasswordToken
 builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
@@ -43,6 +48,9 @@ builder.Services.AddIdentity<AppUser,AppRole>(options =>
   .AddErrorDescriber<CustomIdentityErrorDescriber>()
   .AddDefaultTokenProviders()
   .AddEntityFrameworkStores<AppDbContext>();
+
+//Scoped
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 //CookieSettings
 builder.Services.ConfigureApplicationCookie(opt =>

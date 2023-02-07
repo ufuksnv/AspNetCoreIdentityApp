@@ -25,7 +25,7 @@ namespace AspNetCoreIdentityApp.Areas.Admin.Controllers
         {
             var userList = await _userManager.Users.ToListAsync();
 
-            var userViewModelList = userList.Select(x => new UserViewModel()
+            var userViewModelList = userList.Select(x => new UserViewAdminModel()
             {
                 UserId = x.Id,
                 UserEmail = x.Email,

@@ -1,6 +1,6 @@
 ﻿namespace AspNetCoreIdentityApp.Areas.Admin.Models
 {
-    public class UserViewModel
+    public class UserViewAdminModel
     {
         public string? UserId { get; set; }
         public string? UserName { get; set; }
