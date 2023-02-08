@@ -7,6 +7,17 @@
 <div class=row>
     <div class="col-md-6 offset-md-2">
         <h1>Rol listesi</h1>
+
+        @if ((TempData["NullMessage"] != null))
+        {
+            <div class="alert alert-info" role="alert">
+                @TempData["NullMessage"]
+            </div>
+        }
+
+        <div asp-validation-summary=ModelOnly class="alert alert-danger" role="alert">
+        </div>
+
     </div>
     <div class="col-md-2">
         <a class="btn btn-primary" asp-controller="Admin" asp-action="RoleCreate"> Role Ekle</a>
@@ -22,6 +33,7 @@
                 <tr>
                     <th>Id</th>
                     <th>Rol ismi</th>
+                    <th>Sil</th>
                 </tr>
             </thead>
 
@@ -31,6 +43,7 @@
                     <tr>
                         <td>@item.Id</td>
                         <td>@item.Name</td>
+                        <td><a href="/Admin/RoleDelete/@item.Id" class="btn btn-dark">Sil</a></td>
                     </tr>
                 }
             </tbody>

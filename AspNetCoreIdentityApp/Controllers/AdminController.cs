@@ -72,6 +72,29 @@ namespace AspNetCoreIdentityApp.Controllers
             return RedirectToAction(nameof(AdminController.Index));
         }
 
+        public async Task<IActionResult> RoleDelete(string id)
+        {
+            var roleToDelete = await _roleManager.FindByIdAsync(id);
+
+            if (roleToDelete == null)
+            {
+                TempData["NullMessage"] = "Silinecek rol bulunamadı";
+            }
+
+            var result = await _roleManager.DeleteAsync(roleToDelete!);
+
+            if (!result.Succeeded)
+            {
+                foreach (IdentityError item in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, item.Description);
+                    return View();
+                }
+            }
+
+            return RedirectToAction(nameof(AdminController.Index));
+        }
+
 
     }
         
