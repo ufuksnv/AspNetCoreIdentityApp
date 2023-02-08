@@ -1,27 +1,26 @@
-﻿using AspNetCoreIdentityApp.Areas.Admin.Models;
-using AspNetCoreIdentityApp.Models;
+﻿using AspNetCoreIdentityApp.Models;
+using AspNetCoreIdentityApp.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace AspNetCoreIdentityApp.Areas.Admin.Controllers
+namespace AspNetCoreIdentityApp.Controllers
 {
-    [Area("Admin")]
-    public class RoleController : Controller
+    public class AdminController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<AppRole> _roleManager;
 
-        public RoleController(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
+        public AdminController(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
         {
             _userManager = userManager;
             _roleManager = roleManager;
         }
 
-        public async Task <IActionResult> Index()
+        public async Task<IActionResult> Index()
         {
             var roleList = await _roleManager.Roles.ToListAsync();
-   
+
             var roleViewModelList = roleList.Select(x => new RoleViewModel()
             {
                 Id = x.Id,
@@ -29,6 +28,20 @@ namespace AspNetCoreIdentityApp.Areas.Admin.Controllers
             }).ToList();
 
             return View(roleViewModelList);
+        }
+
+        public async Task<IActionResult> UserList()
+        {
+            var userList = await _userManager.Users.ToListAsync();
+
+            var userViewModelList = userList.Select(x => new UserViewAdminModel()
+            {
+                UserId = x.Id,
+                UserEmail = x.Email,
+                UserName = x.UserName
+            }).ToList();
+
+            return View(userViewModelList);
         }
 
         public IActionResult RoleCreate()
@@ -41,7 +54,7 @@ namespace AspNetCoreIdentityApp.Areas.Admin.Controllers
         {
             AppRole appRole = new AppRole()
             {
-                Name = request.Name,               
+                Name = request.Name,
             };
 
             var identityResult = await _roleManager.CreateAsync(appRole);
@@ -53,10 +66,14 @@ namespace AspNetCoreIdentityApp.Areas.Admin.Controllers
                     ModelState.AddModelError(string.Empty, item.Description);
                     return View();
                 }
-                
+
             }
-            return View();
-           // return RedirectToAction(nameof(RoleController.Index));
+
+            return RedirectToAction(nameof(AdminController.Index));
         }
+
+
     }
+        
+    
 }

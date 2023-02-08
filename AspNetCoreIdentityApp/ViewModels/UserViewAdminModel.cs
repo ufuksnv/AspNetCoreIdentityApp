@@ -1,4 +1,4 @@
-﻿namespace AspNetCoreIdentityApp.Areas.Admin.Models
+﻿namespace AspNetCoreIdentityApp.ViewModels
 {
     public class UserViewAdminModel
     {

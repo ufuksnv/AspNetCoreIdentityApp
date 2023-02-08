@@ -1,0 +1,42 @@
+﻿@model List<RoleViewModel>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class=row>
+    <div class="col-md-6 offset-md-2">
+        <h1>Rol listesi</h1>
+    </div>
+    <div class="col-md-2">
+        <a class="btn btn-primary" asp-controller="Admin" asp-action="RoleCreate"> Role Ekle</a>
+    </div>
+</div>
+
+<div class="row">
+
+    <div class="col-md-8 offset-md-2">
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Rol ismi</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.Name</td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+
+    </div>
+</div>
+
+
