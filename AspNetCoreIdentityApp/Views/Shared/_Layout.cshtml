@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -39,6 +40,12 @@
                                     <li><a class="dropdown-item" asp-controller="Member" asp-action="Index">Kullanıcı Bilgileri</a></li>
                                     <li><a class="dropdown-item" asp-controller="Member" asp-action="PasswordChange">Şifre Değiştir</a></li>
                                     <li><a class="dropdown-item" asp-controller="Member" asp-action="UserEdit">Kullanıcı Güncelle</a></li>
+
+                                    @if(User.HasClaim( x=>x.Type==ClaimTypes.Role && x.Value=="admin"))
+                                    {
+                                        <li><a class="dropdown-item" asp-controller="Admin" asp-action="UserList">Admin Paneli</a></li>
+                                    }
+
                                     <li><a class="dropdown-item" asp-controller="Member" asp-action="Logout">Çıkış Yap</a></li>
                                     
                                 </ul>

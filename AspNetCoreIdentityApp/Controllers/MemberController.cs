@@ -169,5 +169,10 @@ namespace AspNetCoreIdentityApp.Controllers
 
             return View(userEditViewModel);
         }
+
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
     }
 }
