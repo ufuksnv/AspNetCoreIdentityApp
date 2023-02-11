@@ -128,7 +128,6 @@ namespace AspNetCoreIdentityApp.Controllers
             return View(roleViewModelList);
         }
 
-
         [HttpPost]
         public async Task<IActionResult> AssignRoleToUser(string userId,List<AssignRoleToUserViewModel> requestList)
         {

@@ -30,6 +30,15 @@ builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
     options.TokenLifespan = TimeSpan.FromHours(2);
 });
 
+//FacebookOuth
+var configuration = builder.Configuration;
+
+builder.Services.AddAuthentication().AddFacebook(opts =>
+{
+    opts.AppId = configuration["Authentication:Facebook:AppId"];
+    opts.AppSecret = configuration["Authentication:Facebook:AppSecret"];
+});
+
 //AddIdentity
 builder.Services.AddIdentity<AppUser,AppRole>(options =>
 {
